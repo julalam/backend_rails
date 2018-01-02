@@ -1,0 +1,44 @@
+require 'uri-handler'
+require_dependency '../../lib/api_wrapper'
+
+class MessagesController < ApplicationController
+  protect_from_forgery with: :null_session
+
+  def index
+    if params[:from] && params[:to]
+      messages = []
+      # probably from would be the user id from session
+      result = Message.where(from: params[:from], to: params[:to])
+      result.each do |message|
+        messages << message
+      end
+      result = Message.where(from: params[:to], to: params[:from])
+      result.each do |message|
+        messages << message
+      end
+      messages = messages.sort { |a,b| b.created_at <=> a.created_at }
+    else
+      messages = Message.all
+    end
+
+    render status: :ok, json: messages
+  end
+
+  def create
+    message = Message.new(message_params)
+
+    message.message = APIWrapper.translate(message.text.to_uri, message.language.downcase)
+
+    if message.save
+      render status: :ok, json: message
+    else
+      render status: :bad_request, json: {errors: message.errors.messages}
+    end
+  end
+
+  private
+
+  def message_params
+    params.permit(:text, :from, :to, :language)
+  end
+end
