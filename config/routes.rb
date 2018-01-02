@@ -6,5 +6,6 @@ Rails.application.routes.draw do
 
   # custom routes
   post 'login', to: 'users#login'
+  post 'logout', to: 'users#logout', as: 'logout'
 
 end

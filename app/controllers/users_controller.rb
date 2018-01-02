@@ -30,9 +30,14 @@ class UsersController < ApplicationController
         session[:logged_in_user] = @user.id
         # flash messages needed?
       else
-         # errors
+         # errors if new user wasn't created
        end
      end
+  end
+
+  def logout
+    session[:logged_in_user] = nil
+    # need to send anything to react??
   end
 
   private
