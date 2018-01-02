@@ -17,6 +17,24 @@ class UsersController < ApplicationController
     end
   end
 
+  def login
+    username = params[:username]
+    user = User.find_by(username: username)
+
+    if user
+      session[:logged_in_user] = user.id
+      # any flash messages needed?
+    else
+      @user = User.new(username: username)
+      if @user.save
+        session[:logged_in_user] = @user.id
+        # flash messages needed?
+      else
+         # errors
+       end
+     end
+  end
+
   private
 
   def user_params
