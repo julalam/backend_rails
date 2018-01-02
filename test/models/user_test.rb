@@ -18,12 +18,13 @@ describe User do
       end_count.must_equal start_count + 1
     end
 
-    it "requires all the data to create a new user" do
+    it "requires all required data to create a new user" do
       start_count = User.all.count
       invalid_user_data = {
         username: ""
       }
       user = User.new(invalid_user_data)
+      user.save
       end_count = User.all.count
 
       user.wont_be :valid?
