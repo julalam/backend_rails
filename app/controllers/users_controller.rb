@@ -11,7 +11,8 @@ class UsersController < ApplicationController
     user = User.new(user_params)
 
     if user.save
-      render status: :ok, json: {id: user.id}
+      session[:logged_in_user] = user.id
+      render status: :ok, json: {user: user, session: user.id}
     else
       render status: :bad_request, json: {errors: user.errors.messages}
     end
@@ -23,21 +24,15 @@ class UsersController < ApplicationController
 
     if user
       session[:logged_in_user] = user.id
-      # any flash messages needed?
+      render status: :ok, json: {user: user, session: user.id}
     else
-      @user = User.new(username: username)
-      if @user.save
-        session[:logged_in_user] = @user.id
-        # flash messages needed?
-      else
-         # errors if new user wasn't created
-       end
-     end
+      render status: :bad_request, json: {user: nil}
+    end
   end
 
   def logout
     session[:logged_in_user] = nil
-    # need to send anything to react??
+    render status: :ok, json: {session: nil}
   end
 
   private
