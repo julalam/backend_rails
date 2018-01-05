@@ -2,5 +2,6 @@ class Language < ApplicationRecord
   # has_many :messages
   # has_many :users
 
-  validates :text, presence: true
+  validates :name, presence: true
+  validates :symbol, presence: true
 end

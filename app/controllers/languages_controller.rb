@@ -1,22 +1,23 @@
+require 'csv'
+
 class LanguagesController < ApplicationController
   def index
 
-    if params[:from] && params[:to]
-      messages = []
-      # probably from would be the user id from session
-      result = Message.where(from: params[:from], to: params[:to])
-      result.each do |message|
-        messages << message
-      end
-      result = Message.where(from: params[:to], to: params[:from])
-      result.each do |message|
-        messages << message
-      end
-      messages = messages.sort { |a,b| b.created_at <=> a.created_at }
-    else
-      messages = Message.all
-    end
+  file = Rails.root.join('lib', 'languages.csv')
 
-    render status: :ok, json: messages
+  language_failures = []
+  CSV.foreach(file, :headers => true) do |row|
+    language = Language.new
+    language.id = row['id']
+    language.name = row['name']
+    language.symbol = row['symbol']
+    if !language.save
+      language_failures << language
+    end
+  end
+
+    languages = Language.all
+
+    render status: :ok, json: languages
   end
 end
