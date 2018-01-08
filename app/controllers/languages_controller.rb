@@ -10,7 +10,7 @@ class LanguagesController < ApplicationController
     language = Language.new
     language.id = row['id']
     language.name = row['name']
-    language.symbol = row['symbol']
+    language.code = row['code']
     if !language.save
       language_failures << language
     end

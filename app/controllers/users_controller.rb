@@ -12,7 +12,7 @@ class UsersController < ApplicationController
 
     if user.save
       session[:logged_in_user] = user.id
-      render status: :ok, json: {user: user, session: user.id}
+      render status: :ok, json: {session: user}
     else
       render status: :bad_request, json: {errors: user.errors.messages}
     end
@@ -24,7 +24,7 @@ class UsersController < ApplicationController
 
     if user
       session[:logged_in_user] = user.id
-      render status: :ok, json: {user: user, session: user.id}
+      render status: :ok, json: {session: user}
     else
       render status: :bad_request, json: {user: nil}
     end
