@@ -14,6 +14,7 @@ CSV.foreach(FILE, :headers => true) do |row|
   language = Language.new
   language.id = row['id']
   language.name = row['name']
+  language.native_name = row['native_name']
   language.code = row['code']
   if !language.save
     language_failures << language
