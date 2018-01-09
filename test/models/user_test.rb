@@ -6,17 +6,19 @@ describe User do
       @user = users(:eva)
     end
 
-    # it "a user has one language" do
-    #   @user.must_respond_to :language
-    #   @user.language.must_be_kind_of Language
-    # end
+    it "a user has many from contacts" do
+      @user.must_respond_to :from_contacts
+      @user.from_contacts.each do |contact|
+        contact.must_be_kind_of Contact
+      end
+    end
 
-    # it "a user has many messages" do
-    #   @user.must_respond_to :messages
-    #   # @user.messages.each do |message|
-    #   #   message.must_be_kind_of Message
-    #   # end
-    # end
+    it "a user has many to contacts" do
+      @user.must_respond_to :to_contacts
+      @user.to_contacts.each do |contact|
+        contact.must_be_kind_of Contact
+      end
+    end
 
   end
 
