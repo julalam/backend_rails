@@ -7,7 +7,6 @@ class MessagesController < ApplicationController
   def index
     if params[:from] && params[:to]
       messages = []
-      # probably from would be the user id from session
       result = Message.where(from: params[:from], to: params[:to])
       result.each do |message|
         messages << message
@@ -16,7 +15,7 @@ class MessagesController < ApplicationController
       result.each do |message|
         messages << message
       end
-      messages = messages.sort { |a,b| b.created_at <=> a.created_at }
+      messages = messages.sort { |a,b| a.created_at <=> b.created_at }
     else
       messages = Message.all
     end
