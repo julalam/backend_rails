@@ -1,22 +1,24 @@
 require "test_helper"
 
 describe User do
-  # describe "relations" do
-  #   before do
-  #     @user = users(:eva)
-  #   end
-  #
-  #   # it "a user has many messages" do
-  #   #   @user.must_respond_to :messages
-  #   #   # @user.messages.each do |message|
-  #   #   #   message.must_be_kind_of Message
-  #   #   # end
-  #   # end
-  #
-  #   it "a user has one language" do
-  #     @user.must_respond_to :language
-  #   end
-  # end
+  describe "relations" do
+    before do
+      @user = users(:eva)
+    end
+
+    # it "a user has one language" do
+    #   @user.must_respond_to :language
+    #   @user.language.must_be_kind_of Language
+    # end
+
+    # it "a user has many messages" do
+    #   @user.must_respond_to :messages
+    #   # @user.messages.each do |message|
+    #   #   message.must_be_kind_of Message
+    #   # end
+    # end
+
+  end
 
   describe "validations" do
     # it "allows a user to be created with all required data" do
