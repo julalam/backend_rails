@@ -5,7 +5,7 @@ class ContactsController < ApplicationController
     contacts = []
     result = Contact.where(from: params[:from], status: 'accepted')
     result.each do |contact|
-      contacts << {contact: contact, sender: contact.from_user}
+      contacts << {contact: contact, sender: contact.to_user}
     end
     result = Contact.where(to: params[:from], status: 'accepted')
     result.each do |contact|
