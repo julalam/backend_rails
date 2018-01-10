@@ -18,29 +18,7 @@ class ContactsController < ApplicationController
     end
 
     render status: :ok, json: {contacts: contacts, requests: requests}
-
-    # contacts = Contact.all
-    # render status: :ok, json: contacts
   end
-
-  # def index
-  #   contacts = []
-  #   result = Contact.where(from: params[:from], status: 'accepted')
-  #   result.each do |contact|
-  #     contacts << contact
-  #   end
-  #   result = Contact.where(to: params[:from], status: 'accepted')
-  #   result.each do |contact|
-  #     contacts << contact
-  #   end
-  #   requests = []
-  #   result = Contact.where(to: params[:from], status: 'pending')
-  #   result.each do |contact|
-  #     requests << contact
-  #   end
-  #
-  #   render status: :ok, json: {contacts: contacts, requests: requests}
-  # end
 
   def create
     contact = Contact.new(contact_params)
