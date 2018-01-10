@@ -14,7 +14,7 @@ class ContactsController < ApplicationController
     requests = []
     result = Contact.where(to: params[:from], status: 'pending')
     result.each do |contact|
-      requests << [contact, contact.from_user]
+      requests << {sender: contact.from_user, date: contact.created_at}
     end
 
     render status: :ok, json: {contacts: contacts, requests: requests}
