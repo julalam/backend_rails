@@ -7,14 +7,14 @@ describe Contact do
     end
 
     it "a contact belongs to from user" do
-      @contact.must_respond_to :from
-      @contact.from.must_be_kind_of User
+      @contact.must_respond_to :from_user
+      @contact.from.must_be_kind_of Integer
     end
 
-    it "a contact belongs to to user" do
-      @contact.must_respond_to :to
-      @contact.to.must_be_kind_of User
-    end
+    # it "a contact belongs to to user" do
+    #   @contact.must_respond_to :to_user
+    #   @contact.to_user.must_be_kind_of User
+    # end
 
   end
 
