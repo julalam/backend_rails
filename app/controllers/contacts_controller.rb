@@ -5,16 +5,16 @@ class ContactsController < ApplicationController
     contacts = []
     result = Contact.where(from: params[:from], status: 'accepted')
     result.each do |contact|
-      contacts << contact
+      contacts << {contact: contact, sender: contact.from_user}
     end
     result = Contact.where(to: params[:from], status: 'accepted')
     result.each do |contact|
-      contacts << contact
+      contacts << {contact: contact, sender: contact.from_user}
     end
     requests = []
     result = Contact.where(to: params[:from], status: 'pending')
     result.each do |contact|
-      requests << {sender: contact.from_user, date: contact.created_at}
+      requests << {contact: contact, sender: contact.from_user}
     end
 
     render status: :ok, json: {contacts: contacts, requests: requests}
