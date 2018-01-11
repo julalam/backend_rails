@@ -6,6 +6,7 @@ class UsersController < ApplicationController
 
     users = [] # more users and sent requests
     contacts = [] #friends and received requests
+    search = [] # search result
 
     more_users = User.all - [user]
 
@@ -33,12 +34,22 @@ class UsersController < ApplicationController
       users << {user: contact, status: 'user'}
     end
 
-    # users = users.sort_by { |contact| contact["user".to_sym].username }
-
     if !params[:search]
       result = contacts.sort_by{ |contact| contact[:status] }
-    end
+    else
+      users.each do |user|
+        if user.user.username.downcase.unclude?(params[:search].downcase)
+          search << user
+        end
+      end
 
+      contacts.each do |contact|
+        if contact.user.username.downcase.unclude?(params[:search].downcase)
+          search << contact
+        end
+      end
+      result = search.sort_by{ |contact| contact[:status] }
+    end
     render status: :ok, json: result
   end
 
