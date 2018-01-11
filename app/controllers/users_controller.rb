@@ -101,8 +101,7 @@ class UsersController < ApplicationController
   end
 
   def login
-    username = params[:username]
-    user = User.find_by(username: username)
+    user = User.find_by(username: params[:username])
 
     if user
       session[:logged_in_user] = user.id
@@ -120,7 +119,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.permit(:username, :language, :password, :email, :country)
+    params.permit(:username, :email, :password, :country, :language)
   end
 
   def found?(user)

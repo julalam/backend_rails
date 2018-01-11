@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   resources :messages, only:[:index, :create]
   resources :languages, only:[:index]
   resources :countries, only:[:index]
-  resources :contacts, only:[:index, :create, :update]
+  resources :contacts, only:[:index, :create, :update, :destroy]
 
   # custom routes
   post 'login', to: 'users#login'

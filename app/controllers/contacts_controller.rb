@@ -1,24 +1,6 @@
 class ContactsController < ApplicationController
   protect_from_forgery with: :null_session
-
-  def index
-    contacts = []
-    result = Contact.where(from: params[:from], status: 'accepted')
-    result.each do |contact|
-      contacts << {contact: contact, sender: contact.to_user}
-    end
-    result = Contact.where(to: params[:from], status: 'accepted')
-    result.each do |contact|
-      contacts << {contact: contact, sender: contact.from_user}
-    end
-    requests = []
-    result = Contact.where(to: params[:from], status: 'pending')
-    result.each do |contact|
-      requests << {contact: contact, sender: contact.from_user}
-    end
-
-    render status: :ok, json: {contacts: contacts, requests: requests}
-  end
+  before_action :find_contact, only: [:update, :destroy]
 
   def create
     contact = Contact.new(contact_params)
@@ -32,13 +14,20 @@ class ContactsController < ApplicationController
   end
 
   def update
-    contact = Contact.find(params[:id])
-    contact.status = params[:status]
+    @contact.status = params[:status]
 
-    if contact.save
-      render status: :ok, json: contact
+    if @contact.save
+      render status: :ok, json: @contact
     else
-      render status: :bad_request, json: {errors: contact.errors.messages}
+      render status: :bad_request, json: {errors: @contact.errors.messages}
+    end
+  end
+
+  def destroy
+    if @contact.destroy
+      render status: :ok, json: {status: 'deleted'}
+    else
+      render status: :bad_request, json: {errors: 'error'}
     end
   end
 
@@ -47,4 +36,13 @@ class ContactsController < ApplicationController
   def contact_params
     params.require(:contact).permit(:from, :to)
   end
+
+  def find_contact
+    @contact = Contact.find_by(id: params[:id])
+    if !@contact
+      render status: :not_found, json: {errors: 'contact not found'}
+    end
+    return @contact
+  end
+
 end
