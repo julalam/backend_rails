@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   protect_from_forgery with: :null_session
 
   def index
+    # user = User.find_by(id: session[:logged_in_user])
     user = User.find_by(id: params[:user])
 
     if !params[:search] || params[:search] == ''
@@ -16,7 +17,7 @@ class UsersController < ApplicationController
 
       user.to_contacts.each do |contact|
         if contact.status == 'pending'
-          requests << {user: contact.from_user, status: 'recieved_request', contact: contact}
+          requests << {user: contact.from_user, status: 'received_request', contact: contact}
         elsif contact.status == 'accepted'
           contacts << {user: contact.from_user, status: 'friend'}
         end
