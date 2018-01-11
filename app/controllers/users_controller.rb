@@ -108,7 +108,7 @@ class UsersController < ApplicationController
       session[:logged_in_user] = user.id
       render status: :ok, json: {session: user}
     else
-      render status: :bad_request, json: {user: nil}
+      render status: :ok, json: {user: nil}
     end
   end
 
