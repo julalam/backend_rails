@@ -4,53 +4,87 @@ class UsersController < ApplicationController
   def index
     user = User.find_by(id: params[:user])
 
-    users = [] # more users and sent requests
-    contacts = [] #friends and received requests
-    search = [] # search result
-
-    more_users = User.all - [user]
-
-    user.from_contacts.each do |contact|
-      if contact.status == 'pending'
-        users << {user: contact.to_user, status: 'sent_request'}
-        more_users -= [contact.to_user]
-      elsif contact.status == 'accepted'
-        contacts << {user: contact.to_user, status: 'friend'}
-        more_users -= [contact.to_user]
-      end
-    end
-
-    user.to_contacts.each do |contact|
-      if contact.status == 'pending'
-        contacts << {user: contact.from_user, status: 'recieved_request', contact: contact}
-        more_users -= [contact.from_user]
-      elsif contact.status == 'accepted'
-        contacts << {user: contact.from_user, status: 'friend'}
-        more_users -= [contact.from_user]
-      end
-    end
-
-    more_users.each do |contact|
-      users << {user: contact, status: 'user'}
-    end
-
-
     if !params[:search] || params[:search] == ''
-      result = contacts.sort_by{ |contact| contact[:status] }
-    else
-      users.each do |user|
-        if user[:user].username.downcase.include?(params[:search].downcase)
-          search << user
+      contacts = []
+      requests = []
+
+      user.from_contacts.each do |contact|
+        if contact.status == 'accepted'
+          contacts << {user: contact.to_user, status: 'friend'}
         end
       end
 
-      contacts.each do |contact|
-        if contact[:user].username.downcase.include?(params[:search].downcase)
-          search << contact
+      user.to_contacts.each do |contact|
+        if contact.status == 'pending'
+          requests << {user: contact.from_user, status: 'recieved_request', contact: contact}
+        elsif contact.status == 'accepted'
+          contacts << {user: contact.from_user, status: 'friend'}
         end
       end
-      result = search.sort_by{ |contact| contact[:status] }
+
+      contacts = contacts.sort_by { |contact| contact[:status] }
+      requests = requests.sort_by { |contact| contact[:status] }
+
+      result = requests + contacts
+    else
+      contacts = []
+      requests = []
+      more_users = []
+
+      User.all.each do |user|
+        if found?(user)
+          more_users << user
+        end
+      end
+
+      more_users -= [user]
+
+      user.from_contacts.each do |contact|
+        if contact.status == 'accepted'
+          if found?(contact.to_user)
+            more_users -= [contact.to_user]
+            contacts << {user: contact.to_user, status: 'friend'}
+          end
+        end
+      end
+
+      user.to_contacts.each do |contact|
+        if contact.status == 'pending'
+          if found?(contact.from_user)
+            more_users -= [contact.from_user]
+            requests << {user: contact.from_user, status: 'recieved_request', contact: contact}
+          end
+        elsif contact.status == 'accepted'
+          if found?(contact.from_user)
+            more_users -= [contact.from_user]
+            contacts << {user: contact.from_user, status: 'friend'}
+          end
+        end
+      end
+
+      contacts = contacts.sort_by { |contact| contact[:user].username }
+      requests = requests.sort_by { |contact| contact[:user].username }
+
+      users = []
+
+      user.from_contacts.each do |contact|
+        if contact.status == 'pending'
+          if found?(contact.to_user)
+            more_users -= [contact.to_user]
+            users << {user: contact.to_user, status: 'sent_request'}
+          end
+        end
+      end
+
+      more_users.each do |contact|
+        users << {user: contact, status: 'user'}
+      end
+
+      users = users.sort_by{ |contact| contact[:user].username }
+
+      result = requests + contacts + users
     end
+
     render status: :ok, json: result
   end
 
@@ -86,5 +120,9 @@ class UsersController < ApplicationController
 
   def user_params
     params.permit(:username, :language)
+  end
+
+  def found?(user)
+    return user.username.downcase.include?(params[:search].downcase)
   end
 end
