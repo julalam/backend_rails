@@ -120,7 +120,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.permit(:username, :language)
+    params.permit(:username, :language, :password, :email, :country)
   end
 
   def found?(user)
