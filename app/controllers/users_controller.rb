@@ -38,13 +38,13 @@ class UsersController < ApplicationController
       result = contacts.sort_by{ |contact| contact[:status] }
     else
       users.each do |user|
-        if user.user.username.downcase.unclude?(params[:search].downcase)
+        if user[:user].username.downcase.include?(params[:search].downcase)
           search << user
         end
       end
 
       contacts.each do |contact|
-        if contact.user.username.downcase.unclude?(params[:search].downcase)
+        if contact[:user].username.downcase.include?(params[:search].downcase)
           search << contact
         end
       end
