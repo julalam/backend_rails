@@ -1,5 +1,7 @@
 class CountriesController < ApplicationController
-  countries = Country.order(:id)
+  def index
+    countries = Country.order(:id)
 
-  render status: :ok, json: countries
+    render status: :ok, json: countries
+  end
 end

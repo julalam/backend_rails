@@ -7,10 +7,10 @@ require 'csv'
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-FILE = Rails.root.join('db', 'languages.csv')
+LANGUAGE_FILE = Rails.root.join('db', 'languages.csv')
 
 language_failures = []
-CSV.foreach(FILE, :headers => true) do |row|
+CSV.foreach(LANGUAGE_FILE, :headers => true) do |row|
   language = Language.new
   language.id = row['id']
   language.name = row['name']
@@ -18,5 +18,17 @@ CSV.foreach(FILE, :headers => true) do |row|
   language.code = row['code']
   if !language.save
     language_failures << language
+  end
+end
+
+COUNTRY_FILE = Rails.root.join('db', 'countries.csv')
+
+language_failures = []
+CSV.foreach(COUNTRY_FILE, :headers => true) do |row|
+  country = Country.new
+  country.id = row['id']
+  country.name = row['name']
+  if !country.save
+    countries_failures << country
   end
 end
