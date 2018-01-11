@@ -34,7 +34,8 @@ class UsersController < ApplicationController
       users << {user: contact, status: 'user'}
     end
 
-    if !params[:search]
+
+    if !params[:search] || params[:search] == ''
       result = contacts.sort_by{ |contact| contact[:status] }
     else
       users.each do |user|
