@@ -29,7 +29,8 @@ class MessagesController < ApplicationController
     message.message = APIWrapper.translate(message.text.to_uri, message.language.downcase)
 
     if message.save
-      render status: :ok, json: message
+      head :ok
+      #render status: :ok, json: message
     else
       render status: :bad_request, json: {errors: message.errors.messages}
     end

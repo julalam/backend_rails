@@ -7,4 +7,6 @@ class Message < ApplicationRecord
   validates :from, presence: true
   validates :to, presence: true
   validates :language, presence: true
+
+  after_commit { MessageRelayJob.perform_later(self) }
 end
