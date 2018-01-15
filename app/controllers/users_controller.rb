@@ -101,7 +101,7 @@ class UsersController < ApplicationController
   end
 
   def login
-    user = User.find_by(username: params[:username])
+    user = User.find_by(username: params[:data][:username])
 
     if user
       session[:logged_in_user] = user.id
