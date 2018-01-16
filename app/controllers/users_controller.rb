@@ -53,7 +53,7 @@ class UsersController < ApplicationController
         if contact.status == 'pending'
           if found?(contact.from_user)
             more_users -= [contact.from_user]
-            requests << {user: contact.from_user, status: 'recieved_request', contact: contact}
+            requests << {user: contact.from_user, status: 'received_request', contact: contact}
           end
         elsif contact.status == 'accepted'
           if found?(contact.from_user)
@@ -77,8 +77,8 @@ class UsersController < ApplicationController
         end
       end
 
-      more_users.each do |contact|
-        users << {user: contact, status: 'user'}
+      more_users.each do |user|
+        users << {user: user, status: 'user'}
       end
 
       users = users.sort_by{ |contact| contact[:user].username }

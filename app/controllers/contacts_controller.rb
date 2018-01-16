@@ -7,7 +7,8 @@ class ContactsController < ApplicationController
     sender = contact.from_user
 
     if contact.save
-      render status: :ok, json: {contact: contact, sender: sender}
+      head :ok
+      # render status: :ok, json: {contact: contact, sender: sender}
     else
       render status: :bad_request, json: {errors: contact.errors.messages}
     end

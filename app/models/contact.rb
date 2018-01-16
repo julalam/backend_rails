@@ -4,4 +4,6 @@ class Contact < ApplicationRecord
 
   validates :from, presence: true
   validates :to, presence: true
+
+  after_commit { ContactRelayJob.perform_later(self) }
 end
