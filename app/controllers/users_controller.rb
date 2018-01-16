@@ -11,6 +11,28 @@ class UsersController < ApplicationController
 
       user.from_contacts.each do |contact|
         if contact.status == 'accepted'
+          # last_messages_from = []
+          # message_from = {}
+          # user.from_messages.each do |message|
+          #   if message.to_user == contact.to_user
+          #     last_messages_from << message
+          #   end
+          #   last_messages_from = last_messages_from.sort { |a,b| a.created_at <=> b.created_at }
+          #   message_from = last_messages_from.last
+          # end
+          #
+          # last_messages_to = []
+          # message_to = {}
+          # user.to_messages.each do |message|
+          #   if message.from_user == contact.to_user
+          #     last_messages_to << message
+          #   end
+          #   last_messages_to = last_messages_to.sort { |a,b| a.created_at <=> b.created_at }
+          #   message_to = last_messages_to.last
+          # end
+
+          # message = [message_from, message_to].sort { |a,b| a.created_at <=> b.created_at }.last
+
           contacts << {user: contact.to_user, status: 'friend'}
         end
       end
