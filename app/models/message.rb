@@ -1,7 +1,6 @@
 class Message < ApplicationRecord
-  # has_one :language
-  # has_one :from, :class_name => "User"
-  # has_one :to, :class_name => "User"
+  belongs_to :from_user, :class_name => 'User', :foreign_key => 'from'
+  belongs_to :to_user, :class_name => 'User', :foreign_key => 'to'
 
   validates :text, presence: true
   validates :from, presence: true
