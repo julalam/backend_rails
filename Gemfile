@@ -35,6 +35,7 @@ gem 'jbuilder', '~> 2.5'
 
 gem 'uri-handler', '~> 1.0', '>= 1.0.2'
 gem 'httparty', '~> 0.13.7'
+gem 'rack-cors'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -42,7 +43,6 @@ group :development, :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 2.13'
   gem 'selenium-webdriver'
-  gem 'rack-cors'
 end
 
 group :development do
