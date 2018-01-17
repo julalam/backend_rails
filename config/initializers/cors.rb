@@ -1,3 +1,5 @@
+require 'rack'
+require 'rack/cors'
 # Avoid CORS issues when API is called from the frontend app
 # Handle Cross-Origin Resource Sharing (CORS) in order to accept cross-origin AJAX requests
 
