@@ -10,6 +10,7 @@ Rails.application.routes.draw do
   # custom routes
   post 'login', to: 'users#login'
   post 'logout', to: 'users#logout', as: 'logout'
+  get 'search', to: 'users#search', as: 'search'
 
   mount ActionCable.server => '/cable'
 end

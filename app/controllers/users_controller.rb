@@ -5,108 +5,116 @@ class UsersController < ApplicationController
     # user = User.find_by(id: session[:logged_in_user])
     user = User.find_by(id: params[:user])
 
-    if !params[:search] || params[:search] == ''
-      contacts = []
-      requests = []
+    requests = []
+    friends = []
 
-      user.from_contacts.each do |contact|
-        if contact.status == 'accepted'
-          # last_messages_from = []
-          # message_from = {}
-          # user.from_messages.each do |message|
-          #   if message.to_user == contact.to_user
-          #     last_messages_from << message
-          #   end
-          #   last_messages_from = last_messages_from.sort { |a,b| a.created_at <=> b.created_at }
-          #   message_from = last_messages_from.last
-          # end
-          #
-          # last_messages_to = []
-          # message_to = {}
-          # user.to_messages.each do |message|
-          #   if message.from_user == contact.to_user
-          #     last_messages_to << message
-          #   end
-          #   last_messages_to = last_messages_to.sort { |a,b| a.created_at <=> b.created_at }
-          #   message_to = last_messages_to.last
-          # end
+    user.from_contacts.each do |contact|
+      if contact.status == 'accepted'
+        friends << contact.to_user
+      end
+    end
 
-          # message = [message_from, message_to].sort { |a,b| a.created_at <=> b.created_at }.last
+    user.to_contacts.each do |contact|
+      if contact.status == 'pending'
+        requests << {user: contact.from_user, status: 'received_request', contact: contact}
+      elsif contact.status == 'accepted'
+        friends << contact.from_user
+      end
+    end
 
+    # TODO sort by most recent order?
+    requests = requests.sort_by { |contact| contact[:user].username }
+
+    contacts = []
+    friends.each do |friend|
+      last_message_from = friend.from_messages
+        .select { |message| message.from_user.id == friend.id }
+        .sort { |a,b| a.created_at <=> b.created_at }
+        .last
+
+      last_message_to = friend.to_messages
+        .select { |message| message.to_user.id == friend.id }
+        .sort { |a,b| a.created_at <=> b.created_at }
+        .last
+
+      message = nil
+      if last_message_to && last_message_from
+        message = last_message_to.created_at > last_message_from.created_at ? last_message_to : last_message_from
+      elsif last_message_to
+        message = last_message_to
+      elsif last_message_from
+        message = last_message_from
+      end
+
+      contacts << { user: friend, status: 'friend', last_message: message }
+    end
+
+    contacts = contacts.sort_by { |contact| contact[:status] }
+
+    result = requests + contacts
+
+    render status: :ok, json: result
+  end
+
+  def search
+    user = User.find_by(id: params[:user])
+
+    contacts = []
+    requests = []
+    more_users = []
+
+    User.all.each do |user|
+      if found?(user)
+        more_users << user
+      end
+    end
+
+    more_users -= [user]
+
+    user.from_contacts.each do |contact|
+      if contact.status == 'accepted'
+        if found?(contact.to_user)
+          more_users -= [contact.to_user]
           contacts << {user: contact.to_user, status: 'friend'}
         end
       end
+    end
 
-      user.to_contacts.each do |contact|
-        if contact.status == 'pending'
+    user.to_contacts.each do |contact|
+      if contact.status == 'pending'
+        if found?(contact.from_user)
+          more_users -= [contact.from_user]
           requests << {user: contact.from_user, status: 'received_request', contact: contact}
-        elsif contact.status == 'accepted'
+        end
+      elsif contact.status == 'accepted'
+        if found?(contact.from_user)
+          more_users -= [contact.from_user]
           contacts << {user: contact.from_user, status: 'friend'}
         end
       end
-
-      contacts = contacts.sort_by { |contact| contact[:status] }
-      requests = requests.sort_by { |contact| contact[:status] }
-
-      result = requests + contacts
-    else
-      contacts = []
-      requests = []
-      more_users = []
-
-      User.all.each do |user|
-        if found?(user)
-          more_users << user
-        end
-      end
-
-      more_users -= [user]
-
-      user.from_contacts.each do |contact|
-        if contact.status == 'accepted'
-          if found?(contact.to_user)
-            more_users -= [contact.to_user]
-            contacts << {user: contact.to_user, status: 'friend'}
-          end
-        end
-      end
-
-      user.to_contacts.each do |contact|
-        if contact.status == 'pending'
-          if found?(contact.from_user)
-            more_users -= [contact.from_user]
-            requests << {user: contact.from_user, status: 'received_request', contact: contact}
-          end
-        elsif contact.status == 'accepted'
-          if found?(contact.from_user)
-            more_users -= [contact.from_user]
-            contacts << {user: contact.from_user, status: 'friend'}
-          end
-        end
-      end
-
-      contacts = contacts.sort_by { |contact| contact[:user].username }
-      requests = requests.sort_by { |contact| contact[:user].username }
-
-      users = []
-
-      user.from_contacts.each do |contact|
-        if contact.status == 'pending'
-          if found?(contact.to_user)
-            more_users -= [contact.to_user]
-            users << {user: contact.to_user, status: 'sent_request'}
-          end
-        end
-      end
-
-      more_users.each do |user|
-        users << {user: user, status: 'user'}
-      end
-
-      users = users.sort_by{ |contact| contact[:user].username }
-
-      result = requests + contacts + users
     end
+
+    contacts = contacts.sort_by { |contact| contact[:user].username }
+    requests = requests.sort_by { |contact| contact[:user].username }
+
+    users = []
+
+    user.from_contacts.each do |contact|
+      if contact.status == 'pending'
+        if found?(contact.to_user)
+          more_users -= [contact.to_user]
+          users << {user: contact.to_user, status: 'sent_request'}
+        end
+      end
+    end
+
+    more_users.each do |user|
+      users << {user: user, status: 'user'}
+    end
+
+    users = users.sort_by{ |contact| contact[:user].username }
+
+    result = requests + contacts + users
 
     render status: :ok, json: result
   end
@@ -145,6 +153,6 @@ class UsersController < ApplicationController
   end
 
   def found?(user)
-    return user.username.downcase.include?(params[:search].downcase)
+    return user.username.downcase.include?(params[:query].downcase)
   end
 end
