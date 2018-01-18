@@ -135,7 +135,7 @@ class UsersController < ApplicationController
 
     if user
       session[:logged_in_user] = user.id
-      render status: :ok, json: {session: user}
+      render status: :ok, json: {session: user, avatar: user.avatar.url}
     else
       render status: :ok, json: {user: nil}
     end
