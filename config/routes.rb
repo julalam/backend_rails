@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
-  resources :users, only:[:index, :create]
+  resources :users, only:[:index, :create, :update]
   resources :messages, only:[:index, :create]
   resources :languages, only:[:index]
   resources :countries, only:[:index]

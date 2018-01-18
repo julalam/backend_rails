@@ -124,7 +124,18 @@ class UsersController < ApplicationController
 
     if user.save
       session[:logged_in_user] = user.id
-      render status: :ok, json: {session: user}
+      render status: :ok, json: {session: user, avatar: user.avatar.url}
+    else
+      render status: :bad_request, json: {errors: user.errors.messages}
+    end
+  end
+
+  def update
+    user = User.find(params[:id])
+    user.update_attributes(user_update_params)
+
+    if user.save
+      render status: :ok, json: {user: user, avatar: user.avatar.url}
     else
       render status: :bad_request, json: {errors: user.errors.messages}
     end
@@ -143,13 +154,17 @@ class UsersController < ApplicationController
 
   def logout
     session[:logged_in_user] = nil
-    render status: :ok, json: {session: nil}
+    render status: :ok, json: {session: nil, avatar: nil}
   end
 
   private
 
   def user_params
     params.permit(:username, :email, :password, :country, :language, :avatar)
+  end
+
+  def user_update_params
+    params.permit(:email, :country, :language, :avatar)
   end
 
   def found?(user)
