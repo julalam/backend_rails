@@ -2,7 +2,6 @@ class UsersController < ApplicationController
   protect_from_forgery with: :null_session
 
   def index
-    # user = User.find_by(id: session[:logged_in_user])
     user = User.find_by(id: params[:user])
 
     requests = []
@@ -133,6 +132,7 @@ class UsersController < ApplicationController
   def update
     user = User.find(params[:id])
     user.update_attributes(user_update_params)
+    user.avatar.url.slice(2..-1)
 
     if user.save
       render status: :ok, json: {user: user, avatar: user.avatar.url}
@@ -164,7 +164,7 @@ class UsersController < ApplicationController
   end
 
   def user_update_params
-    params.permit(:email, :country, :language, :avatar)
+    params.permit(:avatar)
   end
 
   def found?(user)
