@@ -15,7 +15,7 @@ class UsersController < ApplicationController
 
     user.to_contacts.each do |contact|
       if contact.status == 'pending'
-        requests << {user: contact.from_user, status: 'received_request', contact: contact}
+        requests << {user: contact.from_user, status: 'received_request', contact: contact, avatar: contact.from_user.avatar.url}
       elsif contact.status == 'accepted'
         friends << contact.from_user
       end
@@ -45,7 +45,7 @@ class UsersController < ApplicationController
         message = last_message_from
       end
 
-      contacts << { user: friend, status: 'friend', last_message: message }
+      contacts << { user: friend, status: 'friend', last_message: message, avatar: friend.avatar.url }
     end
 
     contacts = contacts.sort_by { |contact| contact[:status] }
@@ -74,7 +74,7 @@ class UsersController < ApplicationController
       if contact.status == 'accepted'
         if found?(contact.to_user)
           more_users -= [contact.to_user]
-          contacts << {user: contact.to_user, status: 'friend'}
+          contacts << {user: contact.to_user, status: 'friend', avatar: contact.to_user.avatar.url}
         end
       end
     end
@@ -83,12 +83,12 @@ class UsersController < ApplicationController
       if contact.status == 'pending'
         if found?(contact.from_user)
           more_users -= [contact.from_user]
-          requests << {user: contact.from_user, status: 'received_request', contact: contact}
+          requests << {user: contact.from_user, status: 'received_request', contact: contact, avatar: contact.from_user.avatar.url}
         end
       elsif contact.status == 'accepted'
         if found?(contact.from_user)
           more_users -= [contact.from_user]
-          contacts << {user: contact.from_user, status: 'friend'}
+          contacts << {user: contact.from_user, status: 'friend', avatar: contact.from_user.avatar.url}
         end
       end
     end
@@ -102,13 +102,13 @@ class UsersController < ApplicationController
       if contact.status == 'pending'
         if found?(contact.to_user)
           more_users -= [contact.to_user]
-          users << {user: contact.to_user, status: 'sent_request'}
+          users << {user: contact.to_user, status: 'sent_request', avatar: contact.to_user.avatar.url}
         end
       end
     end
 
     more_users.each do |user|
-      users << {user: user, status: 'user'}
+      users << {user: user, status: 'user', avatar: user.avatar.url}
     end
 
     users = users.sort_by{ |contact| contact[:user].username }
