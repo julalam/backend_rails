@@ -5,11 +5,13 @@ class User < ApplicationRecord
   has_many :from_messages, :class_name => 'Message', :foreign_key => 'from'
   has_many :to_messages, :class_name => 'Message', :foreign_key => 'to'
 
-  has_attached_file :avatar, styles: {
+  has_attached_file :avatar,
+  styles: {
     thumb: '100x100>',
     square: '200x200#',
     medium: '300x300>'
-  }
+  },
+  default_url: 'https://s3-us-west-2.amazonaws.com/speakeasy-avatars/default-user.png'
 
   validates :username, presence: true, uniqueness: true, length: { in: 3..15 }
   validates :language, presence: true
