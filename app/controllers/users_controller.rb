@@ -102,7 +102,7 @@ class UsersController < ApplicationController
       if contact.status == 'pending'
         if found?(contact.to_user)
           more_users -= [contact.to_user]
-          users << {user: contact.to_user, status: 'sent_request', avatar: contact.to_user.avatar.url}
+          users << {user: contact.to_user, status: 'sent_request', avatar: contact.to_user.avatar.url, contact: contact}
         end
       end
     end
