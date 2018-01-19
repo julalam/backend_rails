@@ -132,7 +132,6 @@ class UsersController < ApplicationController
   def update
     user = User.find(params[:id])
     user.update_attributes(user_update_params)
-    user.avatar.url.slice(2..-1)
 
     if user.save
       render status: :ok, json: {user: user, avatar: user.avatar.url}
