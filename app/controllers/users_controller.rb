@@ -25,6 +25,9 @@ class UsersController < ApplicationController
 
     contacts = []
     friends.each do |friend|
+      # puts "friend: #{friend}"
+      # puts "friend.language_id: #{friend.language_id}"
+      # puts "friend.language: #{friend.language}"
       last_message_from = friend.from_messages
         .select { |message| message.from_user.id == friend.id }
         .sort { |a,b| a.created_at <=> b.created_at }
@@ -44,7 +47,7 @@ class UsersController < ApplicationController
         message = last_message_from
       end
 
-      contacts << { user: friend, status: 'friend', last_message: message, avatar: friend.avatar.url }
+      contacts << { user: friend, status: 'friend', last_message: message, avatar: friend.avatar.url, language: friend.language.name }
     end
 
     contacts_with_message = contacts
@@ -79,7 +82,7 @@ class UsersController < ApplicationController
       if contact.status == 'accepted'
         if found?(contact.to_user)
           more_users -= [contact.to_user]
-          contacts << {user: contact.to_user, status: 'friend', avatar: contact.to_user.avatar.url}
+          contacts << {user: contact.to_user, status: 'friend', avatar: contact.to_user.avatar.url, language: contact.language.name }
         end
       end
     end
@@ -93,7 +96,7 @@ class UsersController < ApplicationController
       elsif contact.status == 'accepted'
         if found?(contact.from_user)
           more_users -= [contact.from_user]
-          contacts << {user: contact.from_user, status: 'friend', avatar: contact.from_user.avatar.url}
+          contacts << {user: contact.from_user, status: 'friend', avatar: contact.from_user.avatar.url, language: contact.language.name }
         end
       end
     end
@@ -128,7 +131,7 @@ class UsersController < ApplicationController
 
     if user.save
       session[:logged_in_user] = user.id
-      render status: :ok, json: {session: user, avatar: user.avatar.url}
+      render status: :ok, json: {session: user, avatar: user.avatar.url, language: user.language.name}
     else
       render status: :bad_request, json: {errors: user.errors.messages}
     end
@@ -139,7 +142,7 @@ class UsersController < ApplicationController
     user.update_attributes(user_update_params)
 
     if user.save
-      render status: :ok, json: {user: user, avatar: user.avatar.url}
+      render status: :ok, json: {user: user, avatar: user.avatar.url, language: user.language.name}
     else
       render status: :bad_request, json: {errors: user.errors.messages}
     end
@@ -150,7 +153,7 @@ class UsersController < ApplicationController
 
     if user
       session[:logged_in_user] = user.id
-      render status: :ok, json: {session: user, avatar: user.avatar.url}
+      render status: :ok, json: {session: user, avatar: user.avatar.url, language: user.language.name}
     else
       render status: :ok, json: {user: nil}
     end

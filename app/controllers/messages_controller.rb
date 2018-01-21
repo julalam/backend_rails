@@ -26,11 +26,10 @@ class MessagesController < ApplicationController
   def create
     message = Message.new(message_params)
 
-    message.message = APIWrapper.translate(message.text.to_uri, message.language.downcase)
+    message.message = APIWrapper.translate(message.text.to_uri, message.language.code.downcase)
 
     if message.save
       head :ok
-      #render status: :ok, json: message
     else
       render status: :bad_request, json: {errors: message.errors.messages}
     end
@@ -39,7 +38,7 @@ class MessagesController < ApplicationController
   private
 
   def message_params
-    params.require(:message).permit(:text, :from, :to, :language)
+    params.require(:message).permit(:text, :from, :to, :language_id)
 
   end
 end
