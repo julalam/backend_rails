@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180117233149) do
+ActiveRecord::Schema.define(version: 20180121175556) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,13 @@ ActiveRecord::Schema.define(version: 20180117233149) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "images", force: :cascade do |t|
+    t.integer "user"
+    t.string "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "languages", force: :cascade do |t|
     t.string "name"
     t.string "code"
@@ -41,16 +48,15 @@ ActiveRecord::Schema.define(version: 20180117233149) do
     t.string "text"
     t.integer "from"
     t.integer "to"
-    t.string "language"
     t.string "message"
     t.boolean "read", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "language_id"
   end
 
   create_table "users", force: :cascade do |t|
     t.string "username"
-    t.string "language"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "password"
@@ -60,6 +66,7 @@ ActiveRecord::Schema.define(version: 20180117233149) do
     t.string "avatar_content_type"
     t.integer "avatar_file_size"
     t.datetime "avatar_updated_at"
+    t.integer "language_id"
   end
 
   add_foreign_key "contacts", "users", column: "from"
