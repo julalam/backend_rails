@@ -24,17 +24,15 @@ class UsersController < ApplicationController
     requests = requests.sort { |a,b| a[:contact].created_at <=> b[:contact].created_at }
 
     contacts = []
+
     friends.each do |friend|
-      # puts "friend: #{friend}"
-      # puts "friend.language_id: #{friend.language_id}"
-      # puts "friend.language: #{friend.language}"
       last_message_from = friend.from_messages
-        .select { |message| message.from_user.id == friend.id }
+        .select { |message| message.to_user.id == user.id }
         .sort { |a,b| a.created_at <=> b.created_at }
         .last
 
       last_message_to = friend.to_messages
-        .select { |message| message.to_user.id == friend.id }
+        .select { |message| message.from_user.id == user.id }
         .sort { |a,b| a.created_at <=> b.created_at }
         .last
 
