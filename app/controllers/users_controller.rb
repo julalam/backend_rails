@@ -21,8 +21,7 @@ class UsersController < ApplicationController
       end
     end
 
-    # TODO sort by most recent order?
-    requests = requests.sort_by { |contact| contact[:user].username }
+    requests = requests.sort_by { |a, b| a.contact.created_at <=> b.contact.created_at }
 
     contacts = []
     friends.each do |friend|
@@ -48,9 +47,15 @@ class UsersController < ApplicationController
       contacts << { user: friend, status: 'friend', last_message: message, avatar: friend.avatar.url }
     end
 
-    contacts = contacts.sort_by { |contact| contact[:status] }
+    contacts_with_message = contacts
+    .select { |contact| contact[:last_message] != nil }
+    .sort { |a,b| b[:last_message].created_at <=> a[:last_message].created_at }
 
-    result = requests + contacts
+    contacts_with_no_message = contacts
+    .select { |contact| contact[:last_message] == nil }
+    .sort { |contact| contact[:user].username }
+
+    result = requests + contacts_with_message + contacts_with_no_message
 
     render status: :ok, json: result
   end
