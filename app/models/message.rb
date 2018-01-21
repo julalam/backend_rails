@@ -1,5 +1,5 @@
 class Message < ApplicationRecord
-  has_one :language
+  belongs_to :language
 
   belongs_to :from_user, :class_name => 'User', :foreign_key => 'from'
   belongs_to :to_user, :class_name => 'User', :foreign_key => 'to'

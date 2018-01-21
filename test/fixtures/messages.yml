@@ -4,14 +4,14 @@
 # model remove the "{}" from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one:
-  text: 'message one'
+message_one:
+  text: message1
   from: 1
   to: 2
-  language: 'ru'
+  language: language_one
 
-two:
-  text: 'message two'
+message_two:
+  text: message2
   from: 2
   to: 1
-  language: 'en'
+  language: language_two

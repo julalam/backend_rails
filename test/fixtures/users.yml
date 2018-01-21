@@ -9,7 +9,7 @@ eva:
   username: Eva
   email: eva@gmail.com
   password: hellohello
-  language: en
+  language: language_one
   country: USA
 
 emma:
@@ -17,5 +17,5 @@ emma:
   username: Emma
   email: emma@mail.ru
   password: helloworld
-  language: ru
+  language: language_two
   country: Russia

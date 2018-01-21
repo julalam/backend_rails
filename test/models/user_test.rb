@@ -6,6 +6,11 @@ describe User do
       @user = users(:eva)
     end
 
+    it "a user belongs to language" do
+      @user.must_respond_to :language
+      @user.language.must_be_kind_of Language
+    end
+
     it "a user has many from_contacts" do
       @user.must_respond_to :from_contacts
       @user.from_contacts.each do |contact|
@@ -46,7 +51,7 @@ describe User do
 
       user_data = {
         username: "New User",
-        language: "ru",
+        language: languages(:language_one),
         country: "Russia",
         password: "jhfgdtr",
         email: "user@mail.ru"
@@ -80,7 +85,7 @@ describe User do
         username: "Eva",
         email: "eva@gmail.com",
         password: "hellohello",
-        language: "en",
+        language: languages(:language_two),
         country: "USA" }
       user = User.new(user_data)
       user.save
@@ -98,7 +103,7 @@ describe User do
         username: "Ev",
         email: "eva@gmail.com",
         password: "hellohello",
-        language: "en",
+        language: languages(:language_two),
         country: "USA" }
       user = User.new(user_data)
       user.save
@@ -130,7 +135,7 @@ describe User do
       start_count = User.all.count
       user_data = {
         username: "New User",
-        language: "ru",
+        language: languages(:language_two),
         password: "jhfgdtr",
         email: "user@mail.ru"
       }
@@ -147,7 +152,7 @@ describe User do
 
       user_data = {
         username: "User",
-        language: "en",
+        language: languages(:language_two),
         password: "hellohello",
         country: "USA" }
       user = User.new(user_data)
@@ -165,7 +170,7 @@ describe User do
       user_data = {
         username: "User",
         email: "my email",
-        language: "en",
+        language: languages(:language_two),
         password: "hellohello",
         country: "USA" }
       user = User.new(user_data)
@@ -183,7 +188,7 @@ describe User do
       user_data = {
         username: "User",
         email: "email@mail.com",
-        language: "en",
+        language: languages(:language_two),
         country: "USA" }
       user = User.new(user_data)
       user.save
@@ -201,7 +206,7 @@ describe User do
         username: "User",
         email: "email@mail.com",
         password: "hi",
-        language: "en",
+        language: languages(:language_two),
         country: "USA" }
       user = User.new(user_data)
       user.save

@@ -3,7 +3,12 @@ require "test_helper"
 describe Message do
   describe "relations" do
     before do
-      @message = messages(:one)
+      @message = messages(:message_one)
+    end
+
+    it "a message belongs to language" do
+      @message.must_respond_to :language
+      @message.language.must_be_kind_of Language
     end
 
     it "a message has one from_user" do
@@ -25,7 +30,7 @@ describe Message do
         text: "hello world",
         from: 1,
         to: 2,
-        language: "ru"
+        language: languages(:language_one)
       }
 
       message = Message.new(message_data)

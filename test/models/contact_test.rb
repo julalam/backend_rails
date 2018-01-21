@@ -6,12 +6,12 @@ describe Contact do
       @contact = contacts(:one)
     end
 
-    it "a contact belongs to from user" do
+    it "a contact belongs to from_user" do
       @contact.must_respond_to :from_user
       @contact.from_user.must_be_kind_of User
     end
 
-    it "a contact belongs to to user" do
+    it "a contact belongs to to_user" do
       @contact.must_respond_to :to_user
       @contact.to_user.must_be_kind_of User
     end

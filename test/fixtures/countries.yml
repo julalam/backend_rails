@@ -5,6 +5,6 @@
 # below each fixture, per the syntax in the comments below
 #
 
-usa: {
+usa:
   name: USA
-  }
+  
