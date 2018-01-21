@@ -163,7 +163,7 @@ class UsersController < ApplicationController
   end
 
   def user_update_params
-    params.permit(:avatar)
+    params.permit(:avatar, :email, :country, :language)
   end
 
   def found?(user)
