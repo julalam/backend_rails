@@ -6,9 +6,14 @@
 #
 eva:
   username: Eva
-  language: 1
-
+  email: eva@gmail.com
+  password: hellohello
+  language: en
+  country: USA
 
 emma:
   username: Emma
-  language: 2
+  email: emma@mail.ru
+  password: helloworld
+  language: ru
+  country: Russia
