@@ -21,7 +21,7 @@ class UsersController < ApplicationController
       end
     end
 
-    requests = requests.sort_by { |a, b| a.contact.created_at <=> b.contact.created_at }
+    requests = requests.sort { |a,b| a[:contact].created_at <=> b[:contact].created_at }
 
     contacts = []
     friends.each do |friend|
