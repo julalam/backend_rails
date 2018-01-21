@@ -5,10 +5,10 @@
 # below each fixture, per the syntax in the comments below
 #
 one:
-  from: eva
-  to: emma
+  from: 1
+  to: 2
 
 
 two:
-  from: emma
-  to: eva
+  from: 2
+  to: 1

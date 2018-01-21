@@ -5,6 +5,7 @@
 # below each fixture, per the syntax in the comments below
 #
 eva:
+  id: 1
   username: Eva
   email: eva@gmail.com
   password: hellohello
@@ -12,6 +13,7 @@ eva:
   country: USA
 
 emma:
+  id: 2
   username: Emma
   email: emma@mail.ru
   password: helloworld
