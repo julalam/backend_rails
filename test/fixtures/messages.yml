@@ -6,13 +6,12 @@
 #
 one:
   text: 'message one'
-  from: eva
-  to: emma
-  language: 2
-
+  from: 1
+  to: 2
+  language: 'ru'
 
 two:
   text: 'message two'
-  from: emma
-  to: eva
-  language: 1
+  from: 2
+  to: 1
+  language: 'en'
