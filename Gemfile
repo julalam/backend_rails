@@ -37,7 +37,7 @@ gem 'uri-handler', '~> 1.0', '>= 1.0.2'
 gem 'httparty', '~> 0.13.7'
 gem 'rack-cors'
 
-gem 'paperclip'
+gem "paperclip", ">= 5.0"
 gem 'aws-sdk', '~> 2.3'
 
 group :development, :test do
