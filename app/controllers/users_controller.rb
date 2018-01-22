@@ -129,6 +129,7 @@ class UsersController < ApplicationController
 
     if user.save
       session[:logged_in_user] = user.id
+      user.state = 'online'
       render status: :ok, json: {session: user, avatar: user.avatar.url, language: user.language.name}
     else
       render status: :bad_request, json: {errors: user.errors.messages}
@@ -151,6 +152,7 @@ class UsersController < ApplicationController
 
     if user
       session[:logged_in_user] = user.id
+      user.state = 'online'
       render status: :ok, json: {session: user, avatar: user.avatar.url, language: user.language.name}
     else
       render status: :ok, json: {user: nil}
@@ -158,6 +160,8 @@ class UsersController < ApplicationController
   end
 
   def logout
+    user = User.find_by(id: params[:user])
+    user.state = 'offline'
     session[:logged_in_user] = nil
     render status: :ok, json: {session: nil, avatar: nil}
   end
