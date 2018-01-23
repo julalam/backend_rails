@@ -90,5 +90,5 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.action_cable.url = 'ws://speakeasy-rails.herokuapp.com/cable'
-  config.action_cable.allowed_request_origins = ['*']
+  config.action_cable.allowed_request_origins = ['http://localhost:3000']
 end
