@@ -23,7 +23,7 @@ end
 
 COUNTRY_FILE = Rails.root.join('db', 'countries.csv')
 
-language_failures = []
+countries_failures = []
 CSV.foreach(COUNTRY_FILE, :headers => true) do |row|
   country = Country.new
   country.id = row['id']
