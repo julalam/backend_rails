@@ -21,4 +21,6 @@ class User < ApplicationRecord
   validates :password, presence: true, length: { in: 6..10 }
 
   validates_attachment_content_type :avatar, :content_type => /^image\/(png|gif|jpeg|jpg)/
+
+  after_commit { OnlineStateRelayJob.perform_later(self) }
 end
