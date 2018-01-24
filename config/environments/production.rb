@@ -90,7 +90,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.action_cable.url = 'ws://speakeasy-rails.herokuapp.com/cable'
-  config.action_cable.allowed_request_origins = ['http://localhost:3000', 'http://speakeasy-capstone.herokuapp.com/']
+  config.action_cable.allowed_request_origins = ['http://speakeasy-capstone.herokuapp.com/']
   config.paperclip_defaults = {
     storage: :s3,
     s3_host_name: 's3-us-west-2.amazonaws.com',
