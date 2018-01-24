@@ -90,7 +90,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # config.action_cable.url = 'ws://speakeasy-rails.herokuapp.com/cable'
-  config.action_cable.allowed_request_origins = ['http://localhost:3000', 'http://example-env.mpmpcu8qtu.us-west-2.elasticbeanstalk.com']
+  config.action_cable.allowed_request_origins = ['http://example-env.mpmpcu8qtu.us-west-2.elasticbeanstalk.com']
 
   config.action_cable.url = 'ws://example-env.mpmpcu8qtu.us-west-2.elasticbeanstalk.com/cable'
   # config.action_cable.allowed_request_origins = ['http://localhost:3000']
