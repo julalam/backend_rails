@@ -54,7 +54,7 @@ class UsersController < ApplicationController
 
     contacts_with_no_message = contacts
     .select { |contact| contact[:last_message] == nil }
-    .sort { |contact| contact[:user].username }
+    .sort_by { |contact| contact[:user].username }
 
     result = requests + contacts_with_message + contacts_with_no_message
 
