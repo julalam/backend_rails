@@ -80,7 +80,7 @@ class UsersController < ApplicationController
       if contact.status == 'accepted'
         if found?(contact.to_user)
           more_users -= [contact.to_user]
-          contacts << {user: contact.to_user, status: 'friend', avatar: contact.to_user.avatar.url, language: contact.language.name }
+          contacts << {user: contact.to_user, status: 'friend', avatar: contact.to_user.avatar.url, language: contact.to_user.language.name }
         end
       end
     end
@@ -94,7 +94,7 @@ class UsersController < ApplicationController
       elsif contact.status == 'accepted'
         if found?(contact.from_user)
           more_users -= [contact.from_user]
-          contacts << {user: contact.from_user, status: 'friend', avatar: contact.from_user.avatar.url, language: contact.language.name }
+          contacts << {user: contact.from_user, status: 'friend', avatar: contact.from_user.avatar.url, language: contact.from_user.language.name }
         end
       end
     end
